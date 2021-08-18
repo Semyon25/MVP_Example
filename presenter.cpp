@@ -3,11 +3,16 @@
 Presenter::Presenter(IModel *_model, IMainWindow *_view, QObject *parent)
     : QObject(parent), model(_model), view(_view)
 {
-    QObject::connect(dynamic_cast<MainWindow*>(view), &MainWindow::clickButton, this, &Presenter::execute);
-    QObject::connect(dynamic_cast<MainWindow*>(view), &MainWindow::first_line_changed, this, &Presenter::set_first_number);
-    QObject::connect(dynamic_cast<MainWindow*>(view), &MainWindow::second_line_changed, this, &Presenter::set_second_number);
-    QObject::connect(dynamic_cast<MainWindow*>(view), &MainWindow::selectionChanged, this, &Presenter::arithmeticChanged);
-    QObject::connect(this, &Presenter::resultChanged, dynamic_cast<MainWindow*>(view), &MainWindow::setResult);
+    QObject* obj = dynamic_cast<QObject*>(view);
+    QObject::connect(obj, SIGNAL(clickButton()), SLOT(execute()));
+    QObject::connect(obj, SIGNAL(first_line_changed(double)),
+                     SLOT(set_first_number(double)));
+    QObject::connect(obj, SIGNAL(second_line_changed(double)),
+                     SLOT(set_second_number(double)));
+    QObject::connect(obj, SIGNAL(selectionChanged(QString)),
+                     SLOT(arithmeticChanged(QString)));
+    QObject::connect(this, SIGNAL(resultChanged(QString)),
+                     obj, SLOT(setResult(QString)));
 
     view->setArithmetics(arithmetics.keys());
 }

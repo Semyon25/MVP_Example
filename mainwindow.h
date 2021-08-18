@@ -16,8 +16,8 @@ public:
     virtual void setResult(const QString &result) = 0;
     virtual void clickButton() = 0;
     virtual void selectionChanged(const QString &) = 0;
-    virtual void first_line_changed(const QString &) = 0;
-    virtual void second_line_changed(const QString &) = 0;
+    virtual void first_line_changed(double) = 0;
+    virtual void second_line_changed(double) = 0;
 };
 
 QT_BEGIN_NAMESPACE
@@ -45,8 +45,11 @@ public slots:
 signals:
     void clickButton() override;
     void selectionChanged(const QString &) override;
-    void first_line_changed(const QString &) override;
-    void second_line_changed(const QString &) override;
+    void first_line_changed(double) override;
+    void second_line_changed(double) override;
+
+private slots:
+    void onLineEditTextChanged(const QString &text);
 
 private:
     Ui::MainWindow *ui;

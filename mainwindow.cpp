@@ -10,8 +10,8 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(ui->comboBox, QOverload<const QString &>::of(&QComboBox::currentIndexChanged),
             this, &MainWindow::selectionChanged);
     QObject::connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::clickButton);
-    QObject::connect(ui->first_line_edit, &QLineEdit::textEdited, this, &MainWindow::first_line_changed);
-    QObject::connect(ui->second_line_edit, &QLineEdit::textEdited, this, &MainWindow::second_line_changed);
+    QObject::connect(ui->first_line_edit, &QLineEdit::textChanged, this, &MainWindow::onLineEditTextChanged);
+    QObject::connect(ui->second_line_edit, &QLineEdit::textChanged, this, &MainWindow::onLineEditTextChanged);
 
 }
 
@@ -33,4 +33,17 @@ void MainWindow::setArithmetics(const QStringList &items)
         ui->comboBox->setCurrentText(items.at(0));
 }
 
+void MainWindow::onLineEditTextChanged(const QString &text)
+{
+    QLineEdit* lEdit = (QLineEdit*)sender();
+    bool ok;
+    double value = text.toDouble(&ok);
+    if (ok)
+    {
+        if (lEdit == ui->first_line_edit)
+            emit first_line_changed(value);
+        else if (lEdit == ui->second_line_edit)
+            emit second_line_changed(value);
+    }
+}
 

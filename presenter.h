@@ -37,11 +37,11 @@ private:
     };
 
 private slots:
-    void set_first_number(const QString &value){
-        first_number = value.toDouble();
+    void set_first_number(double value){
+        first_number = value;
     }
-    void set_second_number(const QString &value){
-        second_number = value.toDouble();
+    void set_second_number(double value){
+        second_number = value;
     }
     void execute();
     void arithmeticChanged(const QString & value);
